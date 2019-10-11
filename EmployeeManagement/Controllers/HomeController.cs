@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace EmployeeManagement.Controllers
 {
@@ -16,14 +17,18 @@ namespace EmployeeManagement.Controllers
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IHostingEnvironment hostingEnvironment;
+        private readonly ILogger logger;
 
         public HomeController(IEmployeeRepository employeeRepository,
-                              IHostingEnvironment hostingEnvironment)
+                              IHostingEnvironment hostingEnvironment,
+                              ILogger<HomeController> logger)
         {
+           
             _employeeRepository = employeeRepository;
             this.hostingEnvironment = hostingEnvironment;
         }
 
+    
 
         public ViewResult Index()
         {
@@ -36,6 +41,13 @@ namespace EmployeeManagement.Controllers
 
         public ViewResult Details(int? id)
         {
+            //throw new Exception("Error in details view.");
+            //logger.LogTrace("Trace Log");
+            //logger.LogDebug("Debig Log");
+            //logger.LogInformation("Information Log");
+            //logger.LogWarning("Warning Log");
+            //logger.LogError("Error Log");
+            //logger.LogCritical("Critical Log");
 
             Employee employee = _employeeRepository.GetEmployee(id.Value);
             if (employee == null)
@@ -153,18 +165,7 @@ namespace EmployeeManagement.Controllers
             return View();
         }
 
-        [RouteAttribute("/Error/{code?}")]
-        public IActionResult Error(int? code = null)
-        {
-            if (code.HasValue && code.Value == 404)
-            {
-                Console.WriteLine(code.Value);
-                return View("NotFound");
-
-            }
-            else
-                return View("NotFound");
-        }
+        
 
     }
 }
